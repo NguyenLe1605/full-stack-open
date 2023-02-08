@@ -81,6 +81,6 @@ sequenceDiagram
 	server -->> browser: 201 Created
 	deactivate server 
 
-	browser --> user: Render new note
+	browser -->> user: Render new note
 	deactivate browser
 ```
