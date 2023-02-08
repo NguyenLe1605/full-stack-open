@@ -34,7 +34,7 @@ sequenceDiagram
     server -->> browser: data.json
     deactivate server
 
-	browser --> user: Render new note
+	browser -->> user: Render new note
 	deactivate browser
 ```
 
