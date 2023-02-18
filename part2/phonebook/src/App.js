@@ -3,6 +3,7 @@ import Filter from './components/Filter';
 import Persons from './components/Persons';
 import PersonForm from './components/PersonForm';
 import personService from './service/persons';
+import Notification from './components/Notification';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -10,6 +11,8 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filterStr, setFilter] = useState('');
+  const [notifMessage, setNotifMessage] = useState(null);
+  const [color, setColor] = useState('green');
 
   useEffect(() => {
     console.log("Side effect");
@@ -38,6 +41,19 @@ const App = () => {
     }
   ]
 
+  const setNotif = (notifMessage) => {
+    setNotifMessage(notifMessage);
+    setTimeout(() => {
+      setNotifMessage(null);
+    }, 5000);
+    setColor('green');
+  }
+
+  const setStates = () => {
+    setNewName('');
+    setNewNumber('');
+  }
+
   const handleFormSubmit = (event) => {
     event.preventDefault();
     const confirmedString = `${newName} is already added to phonebook,\
@@ -55,9 +71,15 @@ const App = () => {
               ? person
               : returnedPerson
             ));
-            setNewName('');
-            setNewNumber('');
-          }); 
+            setStates();
+            setNotif(`Updated ${changedPerson.name}`);
+          })
+          .catch(error => {
+            console.log(error);
+            setNotif(`Information of ${changedPerson.name} has already been removed from the server`);
+            setPersons(persons.filter(person => person.id !== changedPerson.id));
+            setColor('red');
+          }) 
 
       }
       return;
@@ -72,8 +94,8 @@ const App = () => {
       .create(newPerson)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson));
-        setNewName('');
-        setNewNumber('');
+        setStates();
+        setNotif(`Added ${newPerson.name}`);
       });
   }
 
@@ -87,6 +109,7 @@ const App = () => {
           setPersons(changedPersons);
         })
         .catch(error => {
+          console.log(error);
           alert(`There is no person with the id of ${id}`);
         })
     }
@@ -95,6 +118,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notifMessage} color={color}/>
       <Filter value={filterStr} setState={setFilter} />
       <h2>add a new</h2>
       <PersonForm 
