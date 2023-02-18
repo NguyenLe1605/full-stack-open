@@ -42,11 +42,24 @@ const App = () => {
     event.preventDefault();
     const confirmedString = `${newName} is already added to phonebook,\
                              replace the old number with a new one?`;
-    if (persons.find(person => person.name === newName)) {
+    const existedPerson = persons.find(person => person.name === newName);
+    if (existedPerson) {
       if (window.confirm(confirmedString)) {
-        console.log('cool');
+        console.log(existedPerson);
+        const changedPerson = {...existedPerson, number: newNumber};
+        personService
+          .update(changedPerson.id, changedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(
+              person => person.id !== returnedPerson.id 
+              ? person
+              : returnedPerson
+            ));
+            setNewName('');
+            setNewNumber('');
+          }); 
+
       }
-      alert(`${newName} is already added to the phonebook`);
       return;
     } 
     const newPerson = {
