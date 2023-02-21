@@ -1,3 +1,17 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const Weather = ({weather}) => {
+    return (
+        <div>
+            <h2>Weather in {weather.city}</h2>
+            <p>temperature {weather.temp} Celcius</p>
+            <img src={weather.icon} alt={weather.alt}/>
+            <p>wind {weather.wind} m/s</p>
+        </div>
+    )
+}
+
 const Languages = ({languages}) => {
     return (
         <div>
@@ -31,6 +45,30 @@ const Country = ({country, show, onShowClick}) => {
 }
 const Countries = (props) => {
     const {countries, allows, onShowClick} = props;
+    const [ weather, setWeather ] = useState('');
+    const api_key = process.env.REACT_APP_API_KEY;
+    useEffect(() => {
+        if (countries.length === 1) {
+            const country = countries[0];
+            axios
+                .get(`https://api.openweathermap.org/data/2.5/weather?q=${country.capital}&appid=${api_key}`)
+                .then(response => {
+                    console.log(response.data);
+                    const data = response.data;
+                    const weather = {
+                        city: country.capital,
+                        name: data.weather[0].main,
+                        icon: `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
+                        alt: `The weather in ${country.capital} today is ${data.weather[0].main}`,
+                        wind: data.wind.speed,
+                        temp: (data.main.temp - 273.15).toFixed(2),
+                    }
+                    console.log(weather);
+                    setWeather(weather);
+                }) 
+        }
+    }, [countries])
+
     if (countries.length > 10) {
         return (
             <div>
@@ -42,7 +80,18 @@ const Countries = (props) => {
     if (countries.length === 1) {
         const country = countries[0];
         return (
-            <Country country={country} show={true} />
+            <div>
+                <Country country={country} show={true} />
+                <Weather weather={weather} />
+            </div>
+        )
+    }
+
+    if (countries.length <= 0) {
+        return (
+            <div>
+                Please enter valid country name
+            </div>
         )
     }
 
