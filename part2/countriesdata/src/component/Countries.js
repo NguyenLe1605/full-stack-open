@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Weather = ({weather}) => {
+    if (!weather) return null;
     return (
         <div>
             <h2>Weather in {weather.city}</h2>
@@ -45,7 +46,7 @@ const Country = ({country, show, onShowClick}) => {
 }
 const Countries = (props) => {
     const {countries, allows, onShowClick} = props;
-    const [ weather, setWeather ] = useState('');
+    const [ weather, setWeather ] = useState(null);
     const api_key = process.env.REACT_APP_API_KEY;
     useEffect(() => {
         if (countries.length === 1) {
