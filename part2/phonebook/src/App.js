@@ -54,6 +54,13 @@ const App = () => {
     setNewNumber('');
   }
 
+  const validationErrorHandler = (error) => {
+    const errorMessage = error.response.data.error;
+    console.log(errorMessage);
+    setNotif(errorMessage);
+    setColor('red');
+  }
+
   const handleFormSubmit = (event) => {
     event.preventDefault();
     const confirmedString = `${newName} is already added to phonebook,\
@@ -76,9 +83,13 @@ const App = () => {
           })
           .catch(error => {
             console.log(error);
-            setNotif(`Information of ${changedPerson.name} has already been removed from the server`);
-            setPersons(persons.filter(person => person.id !== changedPerson.id));
-            setColor('red');
+            if (error.response.status === 400) validationErrorHandler(error)
+            
+            else {
+              setNotif(`Information of ${changedPerson.name} has already been removed from the server`);
+              setPersons(persons.filter(person => person.id !== changedPerson.id));
+              setColor('red');
+            }
           }) 
 
       }
@@ -96,7 +107,8 @@ const App = () => {
         setPersons(persons.concat(returnedPerson));
         setStates();
         setNotif(`Added ${newPerson.name}`);
-      });
+      })
+      .catch(error => {validationErrorHandler(error)});
   }
 
   const handleDeleteClick = (id, name) => {
