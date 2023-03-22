@@ -8,18 +8,20 @@
   },
   "devDependencies": {
     "jest": "^29.5.0",
-    "nodemon": "^2.0.21"
+    "nodemon": "^2.0.21",
+    "supertest": "^6.3.3"
   },
   "name": "bloglist",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon idex.js",
-    "test": "jest --verbose"
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development nodemon idex.js",
+    "test": "NODE_ENV=test jest --verbose --runInBand"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "globalTeardown": "./test-teardown.js"
   },
   "author": "",
   "license": "ISC",
