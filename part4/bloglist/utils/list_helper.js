@@ -31,9 +31,27 @@ const mostBlogs = (blogs) => {
     return res.reduce((acc, curr) => acc.blogs > curr.blogs ? acc : curr);    
 }
 
+const mostLikes = (blogs) => {
+    if (blogs == null || blogs.length === 0) {
+        return null;
+    }
+
+    const authors = _.groupBy(blogs, 'author');
+    const res = Object
+        .keys(authors)
+        .map((key) => {
+            return {
+                author: key,
+                likes: _.sumBy(authors[key], 'likes'),
+            }
+        });
+        return res.reduce((acc, curr) => acc.likes > curr.likes ? acc : curr); 
+}
+
 module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes,
 }
