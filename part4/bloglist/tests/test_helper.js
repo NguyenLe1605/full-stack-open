@@ -17,7 +17,7 @@ const initialBlogs = [
         author: "ur",
         url: "ash.com",
         likes: 2
-    }
+    }, 
 ]
 
 const blogsInDb = async() => {

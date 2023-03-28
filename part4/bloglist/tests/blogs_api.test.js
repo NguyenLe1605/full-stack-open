@@ -6,6 +6,7 @@ const api = supertest(app);
 
 const Blog = require('../models/blog');
 const helper = require('./test_helper');
+const { application } = require('express');
 
 beforeEach(async() => {
     await Blog.deleteMany({});
@@ -22,7 +23,7 @@ describe('Reading operations of the application', () => {
     
     test('all blogs are returned', async() => {
         const response = await api.get('/api/blogs');
-        
+
         expect(response.body).toHaveLength(helper.initialBlogs.length);
     })
 
@@ -59,6 +60,54 @@ describe('Creating operations of the application', () => {
             }
         })
         expect(blogContents).toContainEqual(newBlog);    
+    })
+
+    test('A blog without likes has 0 likes', async() => {
+        const zeroLikeBlog = {
+            title: "zero",
+            author: "zero",
+            url: "zero.com"
+        };
+        const zeroBlog  = await api
+            .post('/api/blogs')
+            .send(zeroLikeBlog)
+            .expect(201);
+        expect(zeroBlog.body).toHaveProperty('likes', 0)
+        for (const [key, value] of Object.entries(zeroLikeBlog)) {
+            expect(zeroBlog.body).toHaveProperty(key, value);
+        }
+    })
+
+    test('A blog with missing title', async() => {
+        const missingTitleBlog = {
+            author: "zero",
+            url: "zero.com"
+        };
+        const  blog  = await api
+            .post('/api/blogs')
+            .send(missingTitleBlog)
+            .expect(400);
+    })
+
+    test('A blog with missing url', async() => {
+        const missingUrlBlog = {
+            title: "blah", 
+            author: "zero",
+        };
+        const  blog  = await api
+            .post('/api/blogs')
+            .send(missingUrlBlog)
+            .expect(400);
+    })
+
+    test('A blog with missing url and title', async() => {
+        const missingTitleAndUrlBlog = {
+            author: "zero",
+        };
+        const  blog  = await api
+            .post('/api/blogs')
+            .send(missingTitleAndUrlBlog)
+            .expect(400);
     })
 })
 
