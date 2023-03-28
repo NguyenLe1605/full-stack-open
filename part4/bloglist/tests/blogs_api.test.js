@@ -50,9 +50,15 @@ describe('Creating operations of the application', () => {
 
         const blogsAtEnd = await helper.blogsInDb();
         expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
-        const retrurnedBlog = blogsAtEnd.slice(-1)[0];
-        const postedBlog = {...newBlog, id: retrurnedBlog.id};
-        expect(blogsAtEnd).toContainEqual(postedBlog);    
+        const blogContents = blogsAtEnd.map(blog => {
+            return {
+                title: blog.title,
+                author: blog.author,
+                url: blog.url,
+                likes: blog.likes
+            }
+        })
+        expect(blogContents).toContainEqual(newBlog);    
     })
 })
 
