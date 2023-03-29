@@ -111,6 +111,106 @@ describe('Creating operations of the application', () => {
     })
 })
 
+describe('Deleting Operation of the application', () => {
+    test('Deleting an existing blog', async() => {
+        const blogs = await helper.blogsInDb();
+        const blogToDelete = blogs[0];
+        await api
+            .delete(`/api/blogs/${blogToDelete.id}`)
+            .expect(204);
+        const blogsAtEnd = await helper.blogsInDb();
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+        expect(blogsAtEnd).not.toContainEqual(blogToDelete);
+    })
+
+    test('Deleting a blog with malformated id', async() => {
+        const id = 'q23432q';
+        const blogsAtStart = await helper.blogsInDb();
+        await api
+            .delete(`/api/blogs/${id}`)
+            .expect(400)
+        const blogsAtEnd = await helper.blogsInDb();
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length);
+    })
+
+    test('Deleting a blog with a nonexisting id', async() => {
+        const id = await helper.nonExistingId();
+        const blogsAtStart = await helper.blogsInDb();
+        await api
+            .delete(`/api/blogs/${id}`)
+            .expect(204)
+        const blogsAtEnd = await helper.blogsInDb();
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length);
+    })
+})
+
+describe('Updating Operation of the application', () => {
+    test('Updating an existing blog', async() => {
+        const blogs = await helper.blogsInDb();
+        const blogToUpdate = blogs[0];
+        const blog = {
+            title: blogToUpdate.title,
+            url: blogToUpdate.url,
+            author: blogToUpdate.author,
+            likes: blogToUpdate.likes + 1
+        };
+
+        await api
+            .put(`/api/blogs/${blogToUpdate.id}`)
+            .send(blog)
+            .expect(200);
+        const blogsAtEnd = await helper.blogsInDb();
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+        const contents = blogsAtEnd.map(blog => {
+            return {
+                title: blog.title,
+                author: blog.author,
+                url: blog.url,
+                likes: blog.likes
+            }
+        });
+        expect(contents).toContainEqual(blog);
+    })
+
+    test('Updating a blog with malformated id', async() => {
+        const id = 'q23432q';
+        const blogsAtStart = await helper.blogsInDb();
+        const blogToUpdate = blogsAtStart[0];
+        const blog = {
+            title: blogToUpdate.title,
+            url: blogToUpdate.url,
+            author: blogToUpdate.author,
+            likes: blogToUpdate.likes + 1
+        };
+
+        await api
+            .put(`/api/blogs/${id}`)
+            .send(blog)
+            .expect(400);
+        const blogsAtEnd = await helper.blogsInDb();
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length);
+    })
+
+    test('Updating a blog with a nonexisting id', async() => {
+        const id = await helper.nonExistingId();
+        const blogsAtStart = await helper.blogsInDb();
+        const blogToUpdate = blogsAtStart[0];
+        const blog = {
+            title: blogToUpdate.title,
+            url: blogToUpdate.url,
+            author: blogToUpdate.author,
+            likes: blogToUpdate.likes + 1
+        };
+
+        await api
+            .put(`/api/blogs/${id}`)
+            .send(blog)
+            .expect(400);
+        const blogsAtEnd = await helper.blogsInDb();
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length);
+    })
+})
+
 afterAll(async() => {
     await mongoose.connection.close();
 })
