@@ -20,7 +20,7 @@ morgan.token('data', (request) => JSON.stringify(request.body));
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'));
 app.use(middleware.tokenExtractor)
 
-app.use('/api/blogs', blogRouter)
+app.use('/api/blogs', middleware.userExtractor ,blogRouter)
 app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)
 
