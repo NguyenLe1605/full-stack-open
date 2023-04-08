@@ -3,9 +3,24 @@ const app = require('../app');
 const supertest = require('supertest');
 
 const api = supertest(app); 
-
 const Blog = require('../models/blog');
+const User = require('../models/user')
 const helper = require('./test_helper');
+
+let token;
+beforeAll(async() => {
+    await helper.initUsers();
+    await User.deleteMany({});
+    await User.insertMany(helper.initialUsers);
+
+    const user = helper.initialUsers[0];
+    const loginUser = {
+        username: user.username,
+        password: user.password
+    }
+    const returnedUser = await api.post("/api/login").send(loginUser)
+    token = returnedUser.body.token
+})
 
 beforeEach(async() => {
     await Blog.deleteMany({});
@@ -44,6 +59,7 @@ describe('Creating operations of the application', () => {
         };
         await api 
             .post('/api/blogs')
+            .set('Authorization', `Bearer ${token}`)
             .send(newBlog)
             .expect(201)
             .expect('Content-Type', /application\/json/);
@@ -70,6 +86,7 @@ describe('Creating operations of the application', () => {
         const zeroBlog  = await api
             .post('/api/blogs')
             .send(zeroLikeBlog)
+            .set('Authorization', `Bearer ${token}`)
             .expect(201);
         expect(zeroBlog.body).toHaveProperty('likes', 0)
         for (const [key, value] of Object.entries(zeroLikeBlog)) {
@@ -85,6 +102,7 @@ describe('Creating operations of the application', () => {
         const  blog  = await api
             .post('/api/blogs')
             .send(missingTitleBlog)
+            .set('Authorization', `Bearer ${token}`)
             .expect(400);
     })
 
@@ -96,6 +114,7 @@ describe('Creating operations of the application', () => {
         const  blog  = await api
             .post('/api/blogs')
             .send(missingUrlBlog)
+            .set('Authorization', `Bearer ${token}`)
             .expect(400);
     })
 
@@ -106,7 +125,24 @@ describe('Creating operations of the application', () => {
         const  blog  = await api
             .post('/api/blogs')
             .send(missingTitleAndUrlBlog)
+            .set('Authorization', `Bearer ${token}`)
             .expect(400);
+    })
+
+    test('Unauthorized without proper token', async() => {
+        const newBlog = {
+            title: 'ruha',
+            author: 'rurur',
+            url: 'rururur.com',
+            likes: 100   
+        };
+        await api 
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(401);
+
+        const blogsAtEnd = await helper.blogsInDb();
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
     })
 })
 
