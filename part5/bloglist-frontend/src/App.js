@@ -4,6 +4,9 @@ import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
+import Notification from './components/Notification'
+
+
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -13,6 +16,10 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [notif, setNotif] = useState({
+    message: '',
+    color: 'green'
+  })
   const userTokenKey = 'loggedInUser'
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -28,6 +35,19 @@ const App = () => {
     }
   }, [])
 
+  const updateNotifcation = (message, color) => {
+    setNotif({
+      message: message,
+      color: color
+    })
+    setTimeout(() => {
+      setNotif({
+        message: '',
+        color: 'green'
+      })
+    }, 5000)
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -38,7 +58,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      console.error(exception )
+      updateNotifcation('wrong username or password', 'red')
     }
   } 
 
@@ -56,6 +76,8 @@ const App = () => {
         setTitle('')
         setUrl('')
         setAuthor('')
+        const message = `a new blog You're NOT gonna need it! by ${user.name} added`
+        updateNotifcation(message, 'green')
       })
   }
 
@@ -63,6 +85,7 @@ const App = () => {
     return (
       <div>
         <h2>log in to the application</h2>
+        <Notification message={notif.message} color={notif.color} />
         <LoginForm 
           onSubmit={handleLogin} 
           credentials={{username, password}} 
@@ -75,6 +98,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={notif.message} color={notif.color} />
       <span>{user.name} logged in to the application</span>
       <button onClick={handleLogout}>logout</button>
       <h2>create new</h2>
