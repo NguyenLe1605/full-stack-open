@@ -4,7 +4,6 @@ const Blog = ({blog}) => {
 
   const [visible, setVisibility] = useState(false)
   const showWhenVisible = {display: visible ? '' : 'none'}
-  console.log(blog)
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
