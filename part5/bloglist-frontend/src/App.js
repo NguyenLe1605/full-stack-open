@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
@@ -13,6 +13,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const blogFormRef = useRef(null)
 
   const [notif, setNotif] = useState({
     message: '',
@@ -68,6 +69,7 @@ const App = () => {
   const addBlog = (newBlog) => {
     blogService.create(newBlog)
       .then(blog => {
+        blogFormRef.current.toggleVisibility()
         setBlogs(blogs.concat(blog))
         const message = `a new blog You're NOT gonna need it! by ${user.name} added`
         updateNotifcation(message, 'green')
@@ -95,7 +97,7 @@ const App = () => {
       <Notification message={notif.message} color={notif.color} />
       <span>{user.name} logged in to the application</span>
       <button onClick={handleLogout}>logout</button>
-      <Togglable buttonLabel="new note">
+      <Togglable buttonLabel="new note" ref={blogFormRef}>
         <h2>create new</h2>
         <BlogForm 
           createBlog={addBlog}
