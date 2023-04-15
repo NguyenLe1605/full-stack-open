@@ -5,8 +5,8 @@ const LoginForm = (props) => {
     const {setUsername, setPassword} = setCredentials
     return (
         <form onSubmit={onSubmit}>
-          <Input type="text" name="username" value={credentials.username} setState={setUsername} />
-          <Input type="password" name="password" value={credentials.password} setState={setPassword} />
+          <Input id="username" type="text" name="username" value={credentials.username} setState={setUsername} />
+          <Input id="password" type="password" name="password" value={credentials.password} setState={setPassword} />
           <button type="submit">login</button>
         </form>
     )

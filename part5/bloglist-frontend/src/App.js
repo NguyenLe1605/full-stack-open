@@ -5,7 +5,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
-
+import Togglable from './components/Togglable'
 
 
 const App = () => {
@@ -13,9 +13,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+
   const [notif, setNotif] = useState({
     message: '',
     color: 'green'
@@ -67,19 +65,15 @@ const App = () => {
     setUser(null)
   }
 
-  const handleCreateBlog = (event) => {
-    event.preventDefault()
-    const newBlog = {title, url, author}
+  const addBlog = (newBlog) => {
     blogService.create(newBlog)
       .then(blog => {
         setBlogs(blogs.concat(blog))
-        setTitle('')
-        setUrl('')
-        setAuthor('')
         const message = `a new blog You're NOT gonna need it! by ${user.name} added`
         updateNotifcation(message, 'green')
       })
   }
+
 
   if (user == null) {
     return (
@@ -101,12 +95,12 @@ const App = () => {
       <Notification message={notif.message} color={notif.color} />
       <span>{user.name} logged in to the application</span>
       <button onClick={handleLogout}>logout</button>
-      <h2>create new</h2>
-      <BlogForm 
-        onSubmit={handleCreateBlog} 
-        blog={{title, url, author}}
-        setBlog={{setTitle, setUrl, setAuthor}}
-      />
+      <Togglable buttonLabel="new note">
+        <h2>create new</h2>
+        <BlogForm 
+          createBlog={addBlog}
+        />
+      </Togglable>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}

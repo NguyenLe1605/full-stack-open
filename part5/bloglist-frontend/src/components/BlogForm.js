@@ -1,26 +1,39 @@
 import Input from "./Input"
-const BlogForm = (props) => {
-    const {onSubmit, blog, setBlog} = props
-    const {setTitle, setAuthor, setUrl} = setBlog
+import { useState } from "react"
+const BlogForm = ({createBlog}) => {
+    const [title, setTitle] = useState('')
+    const [author, setAuthor] = useState('')
+    const [url, setUrl] = useState('')
+    const handleCreateBlog = (event) => {
+        event.preventDefault()
+        const newBlog = {title, url, author}    
+        createBlog(newBlog)
+        setTitle('')
+        setAuthor('')
+        setUrl('')
+      }
     return (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleCreateBlog}>
             <Input 
+                id="title"
                 type="text"
-                value={blog.title}
+                value={title}
                 name="title"
                 setState={setTitle}
             />
 
             <Input 
+                id="author"
                 type="text"
-                value={blog.author}
+                value={author}
                 name="author"
                 setState={setAuthor}
             />
 
             <Input 
+                id="url"
                 type="text"
-                value={blog.url}
+                value={url}
                 name="url"
                 setState={setUrl}
             />

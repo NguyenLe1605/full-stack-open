@@ -1,11 +1,11 @@
 const Input = (props) => {
-    const {type, value, setState, name} = props;
+    const {id, type, value, setState, name} = props;
     return (
     <div>
-        <label htmlFor={name}>{name}</label>
+        <label htmlFor={id}>{name}</label>
         <input
             type={type}
-            id={name}
+            id={id}
             value={value}
             name={name}
             onChange={({target}) => setState(target.value)}
