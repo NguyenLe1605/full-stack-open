@@ -31,6 +31,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -91,6 +92,10 @@ const App = () => {
     const deletedBlog = blogs.find(blog => blog.id === id)
     if (window.confirm(`Remove ${deletedBlog.title} by ${deletedBlog.author}`)) {
       console.log("deleted")
+      blogService.remove(id)
+        .then(() => {
+          setBlogs(blogs.filter(blog => blog.id !== id))
+        })
     }
   }
 

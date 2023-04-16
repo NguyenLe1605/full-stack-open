@@ -30,8 +30,13 @@ const update = (id, newObj) => {
 }
 
 const remove = (id) => {
+  const config = {
+    headers: {
+      Authorization: token
+    }
+  }
   const url = `${baseUrl}/${id}`
-  return axios.delete(url)
+  return axios.delete(url, config)
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
