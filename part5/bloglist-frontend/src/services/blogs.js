@@ -23,5 +23,11 @@ const create = newObj => {
   return request.then(res => res.data)
 }
 
+const update = (id, newObj) => {
+  const url = `${baseUrl}/${id}`
+  const request = axios.put(url, newObj)
+  return request.then(res => res.data)
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, setToken }
+export default { getAll, create, setToken, update }

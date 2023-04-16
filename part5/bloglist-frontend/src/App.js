@@ -76,6 +76,16 @@ const App = () => {
       })
   }
 
+  const handleLikeClick = (event) => {
+    const id = event.target.dataset.id
+    const newBlog = {...blogs.find(blog => blog.id === id)}
+    newBlog.likes += 1
+    blogService.update(id, newBlog)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? returnedBlog : blog))
+      })
+  }
+
 
   if (user == null) {
     return (
@@ -104,7 +114,7 @@ const App = () => {
         />
       </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLikeClick={handleLikeClick}/>
       )}
     </div>
   )

@@ -40,13 +40,14 @@ blogRouter.put('/:id', async (request, response) => {
       title: body.title,
       url: body.url,
       author: body.author,
-      likes: body.likes
+      likes: body.likes,
     }
     const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blogContent, {new: true});
     if (updatedBlog == null) {
       return response.status(400).end();
     }
-    response.status(200).json(updatedBlog);
+    const returnedBlog = await updatedBlog.populate('user', {blogs: 0});
+    response.status(200).json(returnedBlog);
 })
 
 
