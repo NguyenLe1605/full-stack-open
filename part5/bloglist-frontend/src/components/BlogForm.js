@@ -1,45 +1,45 @@
-import Input from "./Input"
-import { useState } from "react"
-const BlogForm = ({createBlog}) => {
-    const [title, setTitle] = useState('')
-    const [author, setAuthor] = useState('')
-    const [url, setUrl] = useState('')
-    const handleCreateBlog = (event) => {
-        event.preventDefault()
-        const newBlog = {title, url, author}    
-        createBlog(newBlog)
-        setTitle('')
-        setAuthor('')
-        setUrl('')
-      }
-    return (
-        <form onSubmit={handleCreateBlog}>
-            <Input 
-                id="title"
-                type="text"
-                value={title}
-                name="title"
-                setState={setTitle}
-            />
+import Input from "./Input";
+import { useState } from "react";
+const BlogForm = ({ createBlog }) => {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
+  const handleCreateBlog = (event) => {
+    event.preventDefault();
+    const newBlog = { title, url, author };
+    createBlog(newBlog);
+    setTitle("");
+    setAuthor("");
+    setUrl("");
+  };
+  return (
+    <form onSubmit={handleCreateBlog}>
+      <Input
+        id="title"
+        type="text"
+        value={title}
+        name="title"
+        setState={setTitle}
+      />
 
-            <Input 
-                id="author"
-                type="text"
-                value={author}
-                name="author"
-                setState={setAuthor}
-            />
+      <Input
+        id="author"
+        type="text"
+        value={author}
+        name="author"
+        setState={setAuthor}
+      />
 
-            <Input 
-                id="url"
-                type="text"
-                value={url}
-                name="url"
-                setState={setUrl}
-            />
-            <button type="submit">create</button>
-        </form>
-    )
-}
+      <Input
+        id="url"
+        type="text"
+        value={url}
+        name="url"
+        setState={setUrl}
+      />
+      <button type="submit">create</button>
+    </form>
+  );
+};
 
-export default BlogForm
+export default BlogForm;

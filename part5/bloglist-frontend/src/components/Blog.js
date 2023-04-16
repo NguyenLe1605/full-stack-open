@@ -1,26 +1,26 @@
-import { useState } from "react"
+import { useState } from "react";
 
 const Blog = ({
-  blog, 
-  handleLikeClick, 
+  blog,
+  handleLikeClick,
   handleRemoveClick, isCurrentUser
 }) => {
 
-  const [visible, setVisibility] = useState(false)
-  const showWhenVisible = {display: visible ? '' : 'none'}
+  const [visible, setVisibility] = useState(false);
+  const showWhenVisible = { display: visible ? "" : "none" };
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: 'solid',
+    border: "solid",
     borderWidth: 1,
     marginBottom: 5
-  }
+  };
 
 
   return (
     <div style={blogStyle}>
       {blog.title} {blog.author}
-      <button onClick={() => {setVisibility(!visible)}}>{!visible ? 'view' : 'hide'}</button>
+      <button onClick={() => {setVisibility(!visible);}}>{!visible ? "view" : "hide"}</button>
       <div style={showWhenVisible}>
         <div>
           {blog.url}
@@ -34,8 +34,8 @@ const Blog = ({
         </div>
         {isCurrentUser && <button data-id={blog.id} onClick={handleRemoveClick}>remove</button>}
       </div>
-    </div>  
-  )
-} 
+    </div>
+  );
+};
 
-export default Blog
+export default Blog;
