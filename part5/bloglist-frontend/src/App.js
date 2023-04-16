@@ -86,6 +86,14 @@ const App = () => {
       })
   }
 
+  const handleRemoveClick = (event) => {
+    const id = event.target.dataset.id
+    const deletedBlog = blogs.find(blog => blog.id === id)
+    if (window.confirm(`Remove ${deletedBlog.title} by ${deletedBlog.author}`)) {
+      console.log("deleted")
+    }
+  }
+
   const sortedBlogs = blogs.toSorted((a, b) => b.likes - a.likes)
 
 
@@ -116,7 +124,13 @@ const App = () => {
         />
       </Togglable>
       {sortedBlogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLikeClick={handleLikeClick}/>
+        <Blog 
+          key={blog.id} 
+          blog={blog} 
+          handleLikeClick={handleLikeClick} 
+          handleRemoveClick={handleRemoveClick}
+          isCurrentUser={blog.user.username === user.username}
+        />
       )}
     </div>
   )
