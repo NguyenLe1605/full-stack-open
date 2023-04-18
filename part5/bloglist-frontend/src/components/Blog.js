@@ -20,8 +20,8 @@ const Blog = ({
   return (
     <div style={blogStyle}>
       {blog.title} {blog.author}
-      <button onClick={() => {setVisibility(!visible);}}>{!visible ? "view" : "hide"}</button>
-      <div style={showWhenVisible}>
+      <button className="viewButton" onClick={() => {setVisibility(!visible);}}>{!visible ? "view" : "hide"}</button>
+      <div style={showWhenVisible} className="blogDetails">
         <div>
           {blog.url}
         </div>
