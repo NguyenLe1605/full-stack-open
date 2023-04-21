@@ -10,7 +10,7 @@ module.exports = defineConfig({
     },
     baseUrl: "http://localhost:3000",
     env: {
-      BACKEND: "http://localhost:3001/api"
+      BACKEND: "http://localhost:3003/api"
     },
     video: false
   },

@@ -121,7 +121,7 @@ const App = () => {
       <Notification message={notif.message} color={notif.color} />
       <span>{user.name} logged in to the application</span>
       <button onClick={handleLogout}>logout</button>
-      <Togglable buttonLabel="new note" ref={blogFormRef}>
+      <Togglable buttonLabel="new blog" ref={blogFormRef}>
         <h2>create new</h2>
         <BlogForm
           createBlog={addBlog}
