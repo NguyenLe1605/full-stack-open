@@ -44,8 +44,15 @@ describe("template spec", () => {
       author: "Demi Blah",
       url: "blah.com"
     };
+
+    const blogs = [
+      { title: "Des", author: "Dest Tit", url: "dest.com", likes: 10 },
+      { title: "Ash", author: "Ashig Giga", url: "ash.com" },
+      { title: "Gigas", author: "Gesto Manifesto", url: "giga.com" }
+    ];
     beforeEach(() => {
       cy.login(user.username, user.password);
+      blogs.forEach(blog => cy.createBlog(blog));
     });
 
     it("A blog can be created", function() {
@@ -55,6 +62,13 @@ describe("template spec", () => {
       cy.get("#url").type(blog.url);
       cy.get("#blog-btn").click();
       cy.contains(`${blog.title} ${blog.author}`);
+    });
+
+    it("A user can like a blog", function() {
+      cy.contains(`${blogs[0].title} ${blogs[0].author}`).as("theBlog");
+      cy.get("@theBlog").contains("view").click();
+      cy.get("@theBlog").contains("like").click();
+      cy.get("@theBlog").should("contain", `${blogs[0].likes + 1}`);
     });
   });
 });
