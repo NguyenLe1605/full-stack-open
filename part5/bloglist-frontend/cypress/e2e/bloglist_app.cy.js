@@ -6,9 +6,20 @@ describe("template spec", () => {
     password: "123456",
   };
 
+  const users = [
+    user,
+    {
+      username: "Nhi",
+      name: "Hailey LyLy",
+      password: "123456"
+    }
+  ];
+
   beforeEach(function() {
     cy.request("POST", `${Cypress.env("BACKEND")}/testing/reset`);
-    cy.request("POST", `${Cypress.env("BACKEND")}/users`, user);
+    users.forEach(user => {
+      cy.request("POST", `${Cypress.env("BACKEND")}/users`, user);
+    });
     cy.visit("");
   });
 
@@ -51,6 +62,9 @@ describe("template spec", () => {
       { title: "Gigas", author: "Gesto Manifesto", url: "giga.com" }
     ];
     beforeEach(() => {
+      cy.login(users[1].username, users[1].password);
+      cy.createBlog(blog);
+      cy.contains("logout").click();
       cy.login(user.username, user.password);
       blogs.forEach(blog => cy.createBlog(blog));
     });
@@ -69,6 +83,19 @@ describe("template spec", () => {
       cy.get("@theBlog").contains("view").click();
       cy.get("@theBlog").contains("like").click();
       cy.get("@theBlog").should("contain", `${blogs[0].likes + 1}`);
+    });
+
+    it("The user who created a blog can delete it", function() {
+      cy.contains(`${blogs[0].title} ${blogs[0].author}`).as("theBlog");
+      cy.get("@theBlog").contains("view").click();
+      cy.get("@theBlog").contains("remove").click();
+      cy.get("@theBlog").should("not.exist");
+    });
+
+    it("Only creater can see the remove button of the blog", function() {
+      cy.contains(`${blog.title} ${blog.author}`).as("theBlog");
+      cy.get("@theBlog").contains("view").click();
+      cy.get("@theBlog").should("not.contain", "remove");
     });
   });
 });
