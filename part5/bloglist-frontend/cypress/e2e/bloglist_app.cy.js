@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 describe("template spec", () => {
 
   const user = {
@@ -57,7 +58,7 @@ describe("template spec", () => {
     };
 
     const blogs = [
-      { title: "Des", author: "Dest Tit", url: "dest.com", likes: 10 },
+      { title: "Des", author: "Dest Tit", url: "dest.com" },
       { title: "Ash", author: "Ashig Giga", url: "ash.com" },
       { title: "Gigas", author: "Gesto Manifesto", url: "giga.com" }
     ];
@@ -82,7 +83,8 @@ describe("template spec", () => {
       cy.contains(`${blogs[0].title} ${blogs[0].author}`).as("theBlog");
       cy.get("@theBlog").contains("view").click();
       cy.get("@theBlog").contains("like").click();
-      cy.get("@theBlog").should("contain", `${blogs[0].likes + 1}`);
+      const likes = blogs[0].likes ? blogs[0].likes : 0;
+      cy.get("@theBlog").should("contain", `${likes + 1}`);
     });
 
     it("The user who created a blog can delete it", function() {
@@ -96,6 +98,21 @@ describe("template spec", () => {
       cy.contains(`${blog.title} ${blog.author}`).as("theBlog");
       cy.get("@theBlog").contains("view").click();
       cy.get("@theBlog").should("not.contain", "remove");
+    });
+
+    it("The blogs are ordered according to descending number of likes", function() {
+      const blogList = [blog, ...blogs];
+      blogList.forEach(function(blog, index) {
+        cy.contains(`${blog.title} ${blog.author}`).as("theBlog");
+        cy.get("@theBlog").contains("view").click();
+        for (let i = 0; i <= index; i++) {
+          cy.get("@theBlog").contains("like").click();
+          cy.wait(100);
+        }
+      });
+      blogList.forEach(function(blog, index) {
+        cy.get(".blog").eq(index).contains(blogList[blogList.length - 1 - index].title);
+      });
     });
   });
 });
