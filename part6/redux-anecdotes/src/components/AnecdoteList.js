@@ -19,7 +19,7 @@ const Anecdote = ({
     )
 }
 
-const Anecdotes = (props) => {
+const AnecdoteList = (props) => {
     const anecdotes = useSelector(state => state)
     const dispatch = useDispatch()
 
@@ -43,4 +43,4 @@ const Anecdotes = (props) => {
     )
 }
 
-export default Anecdotes
+export default AnecdoteList
