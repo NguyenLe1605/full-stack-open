@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import blogService from "./services/blogs";
-import loginService from "./services/login";
 import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
@@ -10,8 +9,6 @@ import Togglable from "./components/Togglable";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const blogFormRef = useRef(null);
 
@@ -48,18 +45,10 @@ const App = () => {
     }, 5000);
   };
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await loginService.login({ username, password });
-      window.localStorage.setItem(userTokenKey, JSON.stringify(response));
-      blogService.setToken(response.token);
-      setUser(response);
-      setUsername("");
-      setPassword("");
-    } catch (exception) {
-      updateNotifcation("wrong username or password", "red");
-    }
+  const handleLoginResponse = (response) => {
+    window.localStorage.setItem(userTokenKey, JSON.stringify(response));
+    blogService.setToken(response.token);
+    setUser(response);
   };
 
   const handleLogout = () => {
@@ -107,9 +96,8 @@ const App = () => {
         <h2>log in to the application</h2>
         <Notification message={notif.message} color={notif.color} />
         <LoginForm
-          onSubmit={handleLogin}
-          credentials={{ username, password }}
-          setCredentials={{ setUsername, setPassword }}
+          handleLoginResponse={handleLoginResponse}
+          handleError={() => updateNotifcation("wrong username or password", "red")}
         />
       </div>
     );

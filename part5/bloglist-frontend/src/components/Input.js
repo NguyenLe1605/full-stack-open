@@ -1,5 +1,5 @@
 const Input = (props) => {
-  const { id, type, value, setState, name } = props;
+  const { id, type, value, handleChange, name } = props;
   return (
     <div>
       <label htmlFor={id}>{name}</label>
@@ -8,7 +8,7 @@ const Input = (props) => {
         id={id}
         value={value}
         name={name}
-        onChange={({ target }) => setState(target.value)}
+        onChange={handleChange}
       />
     </div>
   );

@@ -19,7 +19,7 @@ const BlogForm = ({ createBlog }) => {
         type="text"
         value={title}
         name="title"
-        setState={setTitle}
+        handleChange={({ target }) => setTitle(target.value)}
       />
 
       <Input
@@ -27,7 +27,7 @@ const BlogForm = ({ createBlog }) => {
         type="text"
         value={author}
         name="author"
-        setState={setAuthor}
+        handleChange={({ target }) => setAuthor(target.value)}
       />
 
       <Input
@@ -35,7 +35,7 @@ const BlogForm = ({ createBlog }) => {
         type="text"
         value={url}
         name="url"
-        setState={setUrl}
+        handleChange={({ target }) => setUrl(target.value)}
       />
       <button id="blog-btn" type="submit">create</button>
     </form>
