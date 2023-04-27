@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import blogService from "./services/blogs";
+import loginService from "./services/login";
+import storageService from "./services/storage";
 import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
@@ -16,21 +18,18 @@ const App = () => {
     message: "",
     color: "green"
   });
-  const userTokenKey = "loggedInUser";
+
+  useEffect(() => {
+    const user = storageService.loadUser();
+    setUser(user);
+  }, []);
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     );
   }, []);
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem(userTokenKey);
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
-    }
-  }, []);
 
   const updateNotifcation = (message, color) => {
     setNotif({
@@ -45,14 +44,18 @@ const App = () => {
     }, 5000);
   };
 
-  const handleLoginResponse = (response) => {
-    window.localStorage.setItem(userTokenKey, JSON.stringify(response));
-    blogService.setToken(response.token);
-    setUser(response);
+  const login = async (username, password) => {
+    try {
+      const response = await loginService.login({ username, password });
+      storageService.saveUser(response);
+      setUser(response);
+    } catch(exception) {
+      updateNotifcation("wrong username or password", "red");
+    }
   };
 
   const handleLogout = () => {
-    window.localStorage.removeItem(userTokenKey);
+    storageService.removeUser();
     setUser(null);
   };
 
@@ -96,8 +99,7 @@ const App = () => {
         <h2>log in to the application</h2>
         <Notification message={notif.message} color={notif.color} />
         <LoginForm
-          handleLoginResponse={handleLoginResponse}
-          handleError={() => updateNotifcation("wrong username or password", "red")}
+          onLogin={login}
         />
       </div>
     );

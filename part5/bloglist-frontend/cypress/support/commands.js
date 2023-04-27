@@ -1,3 +1,4 @@
+const STORAGE_KEY = "bloggappUser";
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -27,7 +28,7 @@
 Cypress.Commands.add("login", (username, password) => {
   cy.request("POST", `${Cypress.env("BACKEND")}/login`, { username, password })
     .then(({ body }) => {
-      window.localStorage.setItem("loggedInUser", JSON.stringify(body));
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(body));
       cy.visit("");
     });
 });
@@ -38,7 +39,7 @@ Cypress.Commands.add("createBlog", (blog) => {
     method: "POST",
     body: blog,
     headers: {
-      "Authorization": `Bearer ${JSON.parse(localStorage.getItem("loggedInUser")).token}`
+      "Authorization": `Bearer ${JSON.parse(localStorage.getItem(STORAGE_KEY)).token}`
     }
   });
   cy.visit("");

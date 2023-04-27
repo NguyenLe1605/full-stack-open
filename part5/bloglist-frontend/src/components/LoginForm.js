@@ -1,23 +1,14 @@
 import Input from "./Input";
 import { useState } from "react";
-import loginService from "../services/login";
 
-const LoginForm = ({
-  handleLoginResponse,
-  handleError
-}) => {
 
-  const handleLogin = async (event) => {
+const LoginForm = ({ onLogin }) => {
+
+  const handleLogin = (event) => {
     event.preventDefault();
-    try {
-      const response = await loginService.login({ username, password });
-      handleLoginResponse(response);
-      setUsername("");
-      setPassword("");
-    } catch (exception) {
-      handleError();
-    }
+    onLogin(username, password);
   };
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   return (

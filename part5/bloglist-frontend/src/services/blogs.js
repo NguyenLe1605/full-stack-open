@@ -1,10 +1,9 @@
 import axios from "axios";
+import storageService from "./storage";
 const baseUrl = "/api/blogs";
 
-let token = null;
-
-const setToken = newToken => {
-  token = `Bearer ${newToken}`;
+const headers = {
+  "Authorization": storageService.loadUser() ? `Bearer ${storageService.loadUser().token}` : null
 };
 
 
@@ -14,12 +13,7 @@ const getAll = () => {
 };
 
 const create = newObj => {
-  const config = {
-    headers: {
-      Authorization: token
-    }
-  };
-  const request = axios.post(baseUrl, newObj, config);
+  const request = axios.post(baseUrl, newObj, { headers });
   return request.then(res => res.data);
 };
 
@@ -30,13 +24,8 @@ const update = (id, newObj) => {
 };
 
 const remove = (id) => {
-  const config = {
-    headers: {
-      Authorization: token
-    }
-  };
   const url = `${baseUrl}/${id}`;
-  return axios.delete(url, config);
+  return axios.delete(url, { headers });
 };
 
-export default { getAll, create, setToken, update, remove };
+export default { getAll, create, update, remove };
