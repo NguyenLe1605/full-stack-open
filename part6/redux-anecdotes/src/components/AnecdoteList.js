@@ -20,9 +20,14 @@ const Anecdote = ({
 }
 
 const AnecdoteList = (props) => {
-    const anecdotes = useSelector(state => state)
+    const anecdotes = useSelector(({anecdotes, filter}) => {
+        return anecdotes.filter( anecdote =>
+            anecdote.content
+                .toLowerCase()
+                .includes(filter.toLowerCase())
+        )
+    })
     const dispatch = useDispatch()
-
     const vote = (id) => {
         console.log('vote', id)
         dispatch(updateVote(id))
