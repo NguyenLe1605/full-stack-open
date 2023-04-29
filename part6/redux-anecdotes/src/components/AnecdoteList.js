@@ -20,6 +20,7 @@ const Anecdote = ({
 }
 
 const AnecdoteList = (props) => {
+
     const anecdotes = useSelector(({anecdotes, filter}) => {
         return anecdotes.filter( anecdote =>
             anecdote.content
@@ -27,11 +28,13 @@ const AnecdoteList = (props) => {
                 .includes(filter.toLowerCase())
         )
     })
+
     const dispatch = useDispatch()
     const vote = (id) => {
         console.log('vote', id)
         dispatch(updateVote(id))
     }
+
 
     const anecdotesToShow = anecdotes.toSorted((a, b) => b.votes - a.votes)
     return (
