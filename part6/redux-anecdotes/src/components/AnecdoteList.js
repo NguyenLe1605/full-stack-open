@@ -23,10 +23,11 @@ const Anecdote = ({
 const AnecdoteList = (props) => {
 
     const anecdotes = useSelector(({anecdotes, filter}) => {
-        return anecdotes.filter( anecdote =>
-            anecdote.content
+        return anecdotes.filter( anecdote => {
+            return anecdote.content
                 .toLowerCase()
                 .includes(filter.toLowerCase())
+            }
         )
     })
 
