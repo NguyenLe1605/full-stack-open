@@ -1,4 +1,6 @@
+import { useNotifValue } from "../NotifContext"
 const Notification = () => {
+  const msg = useNotifValue();
   const style = {
     border: 'solid',
     padding: 10,
@@ -6,11 +8,11 @@ const Notification = () => {
     marginBottom: 5
   }
   
-  if (true) return null
+  if (msg === null || msg === undefined || msg === "") return null
 
   return (
     <div style={style}>
-      
+      {msg}
     </div>
   )
 }

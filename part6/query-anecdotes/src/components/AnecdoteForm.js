@@ -1,13 +1,19 @@
 import { createNew } from '../requests'
+import { useNotification } from '../NotifContext';
 import { useMutation, useQueryClient } from 'react-query'
 
 const AnecdoteForm = () => {
+  const notify = useNotification();
   const queryClient = useQueryClient();
   const newAnecdoteMutation = useMutation(createNew, {
     onSuccess: (newAnecdote) => {
       const anecdotes = queryClient.getQueryData("anecdotes");
       queryClient.setQueryData("anecdotes", anecdotes.concat(newAnecdote))
-    }
+      notify(`anecdote '${newAnecdote.content}' created `)
+    },
+    onError: ({response}) => {
+      notify(`${response.data.error}`);
+    } 
   })
 
   const onCreate = (event) => {
