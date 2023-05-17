@@ -110,7 +110,7 @@ describe("template spec", () => {
         cy.get("@theBlog").contains("view").click();
         for (let i = 0; i <= index; i++) {
           cy.get("@theBlog").contains("like").click();
-          cy.wait(100);
+          cy.wait(500);
         }
       });
       blogList.forEach(function (blog, index) {
