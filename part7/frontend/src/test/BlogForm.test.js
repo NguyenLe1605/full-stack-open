@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import BlogForm from "../components/BlogForm";
 import userEvent from "@testing-library/user-event";
 
-describe("<BlogFrom/>", () => {
+describe("<BlogForm/>", () => {
   test("blog form calls the event handler with right details", async () => {
     const newBlog = {
       title: "I luv u",

@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import LoginForm from "./components/LoginForm";
-import blogService from "./services/blogs";
 import loginService from "./services/login";
 import storageService from "./services/storage";
 import BlogForm from "./components/BlogForm";
@@ -9,7 +8,7 @@ import Togglable from "./components/Togglable";
 import { updateNotifcation } from "./reducers/notificationReducer";
 import { useDispatch } from "react-redux";
 import Blogs from "./components/Blogs";
-import { setBlogs, appendBlog } from "./reducers/blogsReducer";
+import { initializeBlogs, createBlog } from "./reducers/blogsReducer";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -22,7 +21,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => dispatch(setBlogs(blogs)));
+    dispatch(initializeBlogs());
   }, []);
 
   const login = async (username, password) => {
@@ -40,13 +39,11 @@ const App = () => {
     setUser(null);
   };
 
-  const addBlog = (newBlog) => {
-    blogService.create(newBlog).then((blog) => {
-      blogFormRef.current.toggleVisibility();
-      dispatch(appendBlog(blog));
-      const message = `a new blog ${newBlog.title} by ${user.name} added`;
-      dispatch(updateNotifcation(message, false));
-    });
+  const addBlog = async (newBlog) => {
+    const blog = await dispatch(createBlog(newBlog));
+    blogFormRef.current.toggleVisibility();
+    const message = `a new blog ${blog.title} by ${blog.author} added`;
+    dispatch(updateNotifcation(message, false));
   };
 
   // const handleLikeClick = (event) => {
