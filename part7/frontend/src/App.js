@@ -46,17 +46,6 @@ const App = () => {
     dispatch(updateNotifcation(message, false));
   };
 
-  // const handleLikeClick = (event) => {
-  //   const id = event.target.dataset.id;
-  //   const newBlog = { ...blogs.find((blog) => blog.id === id) };
-  //   newBlog.likes += 1;
-  //   blogService.update(id, newBlog).then((returnedBlog) => {
-  //     setBlogs(
-  //       blogs.map((blog) => (blog.id === returnedBlog.id ? returnedBlog : blog))
-  //     );
-  //   });
-  // };
-
   // const handleRemoveClick = (event) => {
   //   const id = event.target.dataset.id;
   //   const deletedBlog = blogs.find((blog) => blog.id === id);
@@ -68,8 +57,6 @@ const App = () => {
   //     });
   //   }
   // };
-
-  // const sortedBlogs = blogs.toSorted((a, b) => b.likes - a.likes);
 
   if (user === null || user === undefined) {
     return (
