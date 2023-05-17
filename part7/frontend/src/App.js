@@ -46,18 +46,6 @@ const App = () => {
     dispatch(updateNotifcation(message, false));
   };
 
-  // const handleRemoveClick = (event) => {
-  //   const id = event.target.dataset.id;
-  //   const deletedBlog = blogs.find((blog) => blog.id === id);
-  //   if (
-  //     window.confirm(`Remove ${deletedBlog.title} by ${deletedBlog.author}`)
-  //   ) {
-  //     blogService.remove(id).then(() => {
-  //       setBlogs(blogs.filter((blog) => blog.id !== id));
-  //     });
-  //   }
-  // };
-
   if (user === null || user === undefined) {
     return (
       <div>
@@ -78,7 +66,7 @@ const App = () => {
         <h2>create new</h2>
         <BlogForm createBlog={addBlog} />
       </Togglable>
-      <Blogs />
+      <Blogs user={user} />
     </div>
   );
 };

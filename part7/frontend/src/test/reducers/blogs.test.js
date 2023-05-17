@@ -76,4 +76,29 @@ describe("blogsReducer", () => {
     expect(newState).toHaveLength(state.length);
     expect(newState).toContainEqual(action.payload.blog);
   });
+  test("get new state with action blogs/removeBlog", () => {
+    const state = [
+      {
+        id: 1,
+        title: "test",
+        author: "test",
+        likes: 1,
+      },
+      {
+        id: 2,
+        title: "test",
+        author: "test",
+        likes: 2,
+      },
+    ];
+    const action = {
+      type: "blogs/removeBlog",
+      payload: 2,
+    };
+
+    deepFreeze(state);
+    const newState = blogsReducer(state, action);
+    expect(newState).toHaveLength(state.length - 1);
+    expect(newState).not.toContainEqual(state[1]);
+  });
 });
