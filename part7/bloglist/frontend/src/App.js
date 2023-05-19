@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
@@ -7,7 +6,8 @@ import { updateNotifcation } from "./reducers/notificationReducer";
 import { useDispatch, useSelector } from "react-redux";
 import Blogs from "./components/Blogs";
 import { initializeBlogs, createBlog } from "./reducers/blogsReducer";
-import { loadUser, loginUser, logoutUser } from "./reducers/userReducer";
+import { loadUser, logoutUser } from "./reducers/userReducer";
+import Login from "./pages/Login";
 
 const App = () => {
   const user = useSelector((state) => state.user);
@@ -22,14 +22,6 @@ const App = () => {
     dispatch(initializeBlogs());
   }, []);
 
-  const login = async (username, password) => {
-    try {
-      await dispatch(loginUser(username, password));
-    } catch (exception) {
-      dispatch(updateNotifcation("wrong username or password", true));
-    }
-  };
-
   const handleLogout = () => {
     dispatch(logoutUser());
   };
@@ -42,13 +34,7 @@ const App = () => {
   };
 
   if (user === null || user === undefined) {
-    return (
-      <div>
-        <h2>log in to the application</h2>
-        <Notification />
-        <LoginForm onLogin={login} />
-      </div>
-    );
+    return <Login />;
   }
 
   return (
