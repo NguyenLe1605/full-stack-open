@@ -119,5 +119,11 @@ describe("template spec", () => {
           .contains(blogList[blogList.length - 1 - index].title);
       });
     });
+    it("clicks users and see all users", function () {
+      cy.get(".nav").contains("users").click();
+      cy.get(".users")
+        .should("contain", "Users")
+        .and("contain", `${users[0].name}`);
+    });
   });
 });

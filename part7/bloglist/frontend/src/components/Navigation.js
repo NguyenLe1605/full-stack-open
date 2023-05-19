@@ -24,7 +24,7 @@ const Navigation = () => {
   };
 
   return (
-    <div style={navigationStyle}>
+    <div className="nav" style={navigationStyle}>
       <Link style={linkStyle} to="/">
         blogs
       </Link>

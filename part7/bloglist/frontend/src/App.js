@@ -5,6 +5,7 @@ import { loadUser } from "./reducers/userReducer";
 import Login from "./pages/Login";
 import Notification from "./components/Notification";
 import Blogs from "./pages/Blogs";
+import Users from "./pages/Users";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
 
@@ -32,6 +33,7 @@ const App = () => {
         <h2>blog app</h2>
         <Routes>
           <Route path="/" element={<Blogs />} />
+          <Route path="/users" element={<Users />} />
         </Routes>
       </Router>
     </div>
