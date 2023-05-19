@@ -5,6 +5,8 @@ import { loadUser } from "./reducers/userReducer";
 import Login from "./pages/Login";
 import Header from "./components/Header.js";
 import Blogs from "./pages/Blogs";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navigation from "./components/Navigation";
 
 const App = () => {
   const user = useSelector((state) => state.user);
@@ -25,7 +27,12 @@ const App = () => {
   return (
     <div>
       <Header />
-      <Blogs />
+      <Router>
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<Blogs />} />
+        </Routes>
+      </Router>
     </div>
   );
 };
