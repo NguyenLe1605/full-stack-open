@@ -11,10 +11,15 @@ const Blog = ({ blog, handleLikeClick, handleRemoveClick, isCurrentUser }) => {
     marginBottom: 5,
   };
 
+  const buttonStyle = {
+    marginLeft: 5,
+  };
+
   return (
     <div style={blogStyle} className="blog">
       {blog.title} {blog.author}
       <button
+        style={buttonStyle}
         className="viewButton"
         onClick={() => {
           setVisibility(!visible);
@@ -26,7 +31,11 @@ const Blog = ({ blog, handleLikeClick, handleRemoveClick, isCurrentUser }) => {
         <div>{blog.url}</div>
         <div>
           {blog.likes}
-          <button data-id={blog.id} onClick={handleLikeClick}>
+          <button
+            style={buttonStyle}
+            data-id={blog.id}
+            onClick={handleLikeClick}
+          >
             like
           </button>
         </div>

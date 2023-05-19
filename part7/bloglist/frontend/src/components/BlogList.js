@@ -2,7 +2,7 @@ import Blog from "./Blog";
 import { useSelector, useDispatch } from "react-redux";
 import { updateBlog, deleteBlog } from "../reducers/blogsReducer";
 
-const Blogs = ({ user }) => {
+const BlogList = ({ user }) => {
   const blogs = useSelector((state) =>
     state.blogs.toSorted((a, b) => b.likes - a.likes)
   );
@@ -39,4 +39,4 @@ const Blogs = ({ user }) => {
   );
 };
 
-export default Blogs;
+export default BlogList;

@@ -11,6 +11,9 @@ const Togglable = forwardRef((props, ref) => {
 
   const hideWhenVisible = { display: visible ? "none" : "" };
   const showWhenVisible = { display: visible ? "" : "none" };
+  const buttonStyle = {
+    marginBottom: 15,
+  };
 
   useImperativeHandle(ref, () => {
     return {
@@ -24,6 +27,7 @@ const Togglable = forwardRef((props, ref) => {
     <div>
       <div style={hideWhenVisible}>
         <button
+          style={buttonStyle}
           onClick={() => {
             setVisibility(true);
           }}
@@ -34,6 +38,7 @@ const Togglable = forwardRef((props, ref) => {
       <div style={showWhenVisible}>
         {props.children}
         <button
+          style={buttonStyle}
           onClick={() => {
             setVisibility(false);
           }}

@@ -12,6 +12,11 @@ const BlogForm = ({ createBlog }) => {
     setAuthor("");
     setUrl("");
   };
+
+  const buttonStyle = {
+    marginBottom: 15,
+    marginTop: 10,
+  };
   return (
     <form className="blog-form" onSubmit={handleCreateBlog}>
       <Input
@@ -37,7 +42,7 @@ const BlogForm = ({ createBlog }) => {
         name="url"
         handleChange={({ target }) => setUrl(target.value)}
       />
-      <button id="blog-btn" type="submit">
+      <button style={buttonStyle} id="blog-btn" type="submit">
         create
       </button>
     </form>
