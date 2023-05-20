@@ -83,7 +83,9 @@ describe("bloglist tests", () => {
     });
 
     it("A user can like a blog", function () {
-      cy.contains(`${blogs[0].title} ${blogs[0].author}`).as("theBlog");
+      cy.contains(`${blogs[0].title} ${blogs[0].author}`)
+        .parent()
+        .as("theBlog");
       cy.get("@theBlog").contains("view").click();
       cy.get("@theBlog").contains("like").click();
       const likes = blogs[0].likes ? blogs[0].likes : 0;
@@ -91,14 +93,25 @@ describe("bloglist tests", () => {
     });
 
     it("The user who created a blog can delete it", function () {
-      cy.contains(`${blogs[0].title} ${blogs[0].author}`).as("theBlog");
+      cy.contains(`${blogs[0].title} ${blogs[0].author}`)
+        .parent()
+        .as("theBlog");
       cy.get("@theBlog").contains("view").click();
       cy.get("@theBlog").contains("remove").click();
-      cy.get("@theBlog").should("not.exist");
+      cy.contains(`${blogs[0].title} ${blogs[0].author}`).should("not.exist");
+    });
+
+    it("The user can access to the blog post view by click the name of the blog post", function () {
+      const postName = `${blogs[0].title} ${blogs[0].author}`;
+      cy.contains(postName).click();
+      cy.contains(postName);
+      cy.get(".blogDetails")
+        .should("contain", blogs[0].url)
+        .and("contain", "likes");
     });
 
     it("Only creator can see the remove button of the blog", function () {
-      cy.contains(`${blog.title} ${blog.author}`).as("theBlog");
+      cy.contains(`${blog.title} ${blog.author}`).parent().as("theBlog");
       cy.get("@theBlog").contains("view").click();
       cy.get("@theBlog").should("not.contain", "remove");
     });
@@ -106,7 +119,7 @@ describe("bloglist tests", () => {
     it("The blogs are ordered according to descending number of likes", function () {
       const blogList = [blog, ...blogs];
       blogList.forEach(function (blog, index) {
-        cy.contains(`${blog.title} ${blog.author}`).as("theBlog");
+        cy.contains(`${blog.title} ${blog.author}`).parent().as("theBlog");
         cy.get("@theBlog").contains("view").click();
         for (let i = 0; i <= index; i++) {
           cy.get("@theBlog").contains("like").click();

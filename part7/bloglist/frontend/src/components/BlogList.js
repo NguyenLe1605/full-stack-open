@@ -1,28 +1,12 @@
 import Blog from "./Blog";
 import { useSelector, useDispatch } from "react-redux";
-import { updateBlog, deleteBlog } from "../reducers/blogsReducer";
+import { handleLikeClick, handleRemoveClick } from "../utils/click";
 
 const BlogList = ({ user }) => {
   const blogs = useSelector((state) =>
     state.blogs.toSorted((a, b) => b.likes - a.likes)
   );
   const dispatch = useDispatch();
-  const handleLikeClick = (event) => {
-    const id = event.target.dataset.id;
-    const newBlog = { ...blogs.find((blog) => blog.id === id) };
-    newBlog.likes += 1;
-    dispatch(updateBlog(id, newBlog));
-  };
-
-  const handleRemoveClick = (event) => {
-    const id = event.target.dataset.id;
-    const deletedBlog = blogs.find((blog) => blog.id === id);
-    if (
-      window.confirm(`Remove ${deletedBlog.title} by ${deletedBlog.author}`)
-    ) {
-      dispatch(deleteBlog(id));
-    }
-  };
 
   return (
     <div>
@@ -30,8 +14,8 @@ const BlogList = ({ user }) => {
         <Blog
           key={blog.id}
           blog={blog}
-          handleLikeClick={handleLikeClick}
-          handleRemoveClick={handleRemoveClick}
+          handleLikeClick={handleLikeClick(blogs, dispatch)}
+          handleRemoveClick={handleRemoveClick(blogs, dispatch)}
           isCurrentUser={user.username === blog.user.username}
         />
       ))}

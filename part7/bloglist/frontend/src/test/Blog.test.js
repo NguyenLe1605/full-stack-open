@@ -3,6 +3,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { render, screen } from "@testing-library/react";
 import Blog from "../components/Blog";
 import userEvent from "@testing-library/user-event";
+import { BrowserRouter as Router } from "react-router-dom";
 
 describe("<Blog />", () => {
   let container;
@@ -17,7 +18,11 @@ describe("<Blog />", () => {
     },
   };
   beforeEach(() => {
-    container = render(<Blog blog={blog} />).container;
+    container = render(
+      <Router>
+        <Blog blog={blog} />
+      </Router>
+    ).container;
   });
   test("render only blog's author and title, not url and likes by default", () => {
     screen.getByText("Something Sebas Sebas");
@@ -36,7 +41,11 @@ describe("<Blog />", () => {
 
   test("click the like button twice", async () => {
     const mockLikeHanlder = jest.fn();
-    render(<Blog blog={blog} handleLikeClick={mockLikeHanlder} />);
+    render(
+      <Router>
+        <Blog blog={blog} handleLikeClick={mockLikeHanlder} />
+      </Router>
+    );
     const viewButton = container.querySelector(".viewButton");
     const user = userEvent.setup();
 
