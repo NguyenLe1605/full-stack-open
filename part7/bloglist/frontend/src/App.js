@@ -5,6 +5,7 @@ import { loadUser } from "./reducers/userReducer";
 import Login from "./pages/Login";
 import Notification from "./components/Notification";
 import Home from "./pages/Home";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const App = () => {
   const user = useSelector((state) => state.user);
@@ -25,7 +26,9 @@ const App = () => {
   return (
     <div>
       <Notification />
-      <Home />
+      <Router>
+        <Home />
+      </Router>
     </div>
   );
 };

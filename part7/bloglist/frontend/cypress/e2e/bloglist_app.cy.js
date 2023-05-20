@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-describe("template spec", () => {
+describe("bloglist tests", () => {
   const user = {
     username: "hola",
     name: "Helasto Damicria",
@@ -97,7 +97,7 @@ describe("template spec", () => {
       cy.get("@theBlog").should("not.exist");
     });
 
-    it("Only creater can see the remove button of the blog", function () {
+    it("Only creator can see the remove button of the blog", function () {
       cy.contains(`${blog.title} ${blog.author}`).as("theBlog");
       cy.get("@theBlog").contains("view").click();
       cy.get("@theBlog").should("not.contain", "remove");
@@ -119,11 +119,21 @@ describe("template spec", () => {
           .contains(blogList[blogList.length - 1 - index].title);
       });
     });
-    it("clicks users and see all users", function () {
-      cy.get(".nav").contains("users").click();
-      cy.get(".users")
-        .should("contain", "Users")
-        .and("contain", `${users[0].name}`);
+    describe("When click users", function () {
+      beforeEach(() => {
+        cy.get(".nav").contains("users").click();
+      });
+      it("clicks users and see all users", function () {
+        cy.get(".users")
+          .should("contain", "Users")
+          .and("contain", `${users[0].name}`);
+      });
+      it("clicks a user and see the added blogs", function () {
+        cy.get(".users").contains(`${users[0].name}`).click();
+        cy.get(".user")
+          .should("contain", `${users[0].name}`)
+          .and("contain", `${blogs[0].title}`);
+      });
     });
   });
 });
