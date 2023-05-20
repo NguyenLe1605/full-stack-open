@@ -1,4 +1,5 @@
 const UserList = ({ users }) => {
+  console.log(users);
   return (
     <table>
       <thead>
