@@ -18,11 +18,31 @@ const blogSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  comments: [
+    {
+      id: {
+        type: mongoose.Schema.Types.ObjectId,
+      },
+      comment: {
+        type: String,
+      },
+    },
+  ],
 });
 
 blogSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
+    returnedObject.comments = returnedObject.comments.map(
+      ({ comment, _id }) => {
+        {
+          return {
+            comment,
+            id: _id.toString(),
+          };
+        }
+      }
+    );
     delete returnedObject._id;
     delete returnedObject.__v;
   },

@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import BlogDetails from "../../components/BlogDetails";
 import { handleLikeClick, handleRemoveClick } from "../../utils/click";
 import { useDispatch, useSelector } from "react-redux";
+import CommentList from "../../components/CommentList";
 
 const SingleBlog = ({ blogs }) => {
   if (!blogs) {
@@ -22,6 +23,8 @@ const SingleBlog = ({ blogs }) => {
         handleRemoveClick={handleRemoveClick(blog, dispatch)}
         isCurrentUser={blog.user.username === user.username}
       />
+      <h3>comments</h3>
+      <CommentList comments={blog.comments} />
     </div>
   );
 };
