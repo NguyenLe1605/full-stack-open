@@ -3,6 +3,7 @@ import BlogDetails from "../../components/BlogDetails";
 import { handleLikeClick, handleRemoveClick } from "../../utils/click";
 import { useDispatch, useSelector } from "react-redux";
 import CommentList from "../../components/CommentList";
+import CommentPost from "../../components/CommentPost";
 
 const SingleBlog = ({ blogs }) => {
   if (!blogs) {
@@ -12,6 +13,10 @@ const SingleBlog = ({ blogs }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const blog = blogs.find((blog) => blog.id === id);
+
+  if (!blog) {
+    return null;
+  }
   return (
     <div>
       <h1>
@@ -24,6 +29,7 @@ const SingleBlog = ({ blogs }) => {
         isCurrentUser={blog.user.username === user.username}
       />
       <h3>comments</h3>
+      <CommentPost blogid={id} />
       <CommentList comments={blog.comments} />
     </div>
   );

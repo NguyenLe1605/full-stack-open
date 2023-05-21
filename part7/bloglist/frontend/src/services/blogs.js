@@ -1,6 +1,7 @@
 import axios from "axios";
 import storageService from "./storage";
 const baseUrl = "/api/blogs";
+const commentUrl = "/comments";
 
 const headers = {
   Authorization: storageService.loadUser()
@@ -29,4 +30,10 @@ const remove = (id) => {
   return axios.delete(url, { headers });
 };
 
-export default { getAll, create, update, remove };
+const comment = (id, comment) => {
+  const url = `${baseUrl}/${id}${commentUrl}`;
+  const request = axios.post(url, { comment });
+  return request.then((request) => request.data);
+};
+
+export default { getAll, create, update, remove, comment };
