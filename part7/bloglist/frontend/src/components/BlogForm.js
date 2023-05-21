@@ -1,5 +1,8 @@
 import Input from "./Input";
 import { useState } from "react";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+
 const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -13,12 +16,8 @@ const BlogForm = ({ createBlog }) => {
     setUrl("");
   };
 
-  const buttonStyle = {
-    marginBottom: 15,
-    marginTop: 10,
-  };
   return (
-    <form className="blog-form" onSubmit={handleCreateBlog}>
+    <Form className="blog-form" onSubmit={handleCreateBlog}>
       <Input
         id="title"
         type="text"
@@ -42,10 +41,10 @@ const BlogForm = ({ createBlog }) => {
         name="url"
         handleChange={({ target }) => setUrl(target.value)}
       />
-      <button style={buttonStyle} id="blog-btn" type="submit">
+      <Button className="my-3" id="blog-btn" type="submit">
         create
-      </button>
-    </form>
+      </Button>
+    </Form>
   );
 };
 

@@ -24,7 +24,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className="container">
       <Notification />
       <Router>
         <Home />

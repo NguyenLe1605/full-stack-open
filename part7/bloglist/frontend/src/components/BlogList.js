@@ -1,6 +1,7 @@
 import Blog from "./Blog";
 import { useSelector, useDispatch } from "react-redux";
 import { handleLikeClick, handleRemoveClick } from "../utils/click";
+import ListGroup from "react-bootstrap/ListGroup";
 
 const BlogList = ({ user }) => {
   const blogs = useSelector((state) =>
@@ -9,7 +10,7 @@ const BlogList = ({ user }) => {
   const dispatch = useDispatch();
 
   return (
-    <div>
+    <ListGroup>
       {blogs.map((blog) => (
         <Blog
           key={blog.id}
@@ -19,7 +20,7 @@ const BlogList = ({ user }) => {
           isCurrentUser={user.username === blog.user.username}
         />
       ))}
-    </div>
+    </ListGroup>
   );
 };
 

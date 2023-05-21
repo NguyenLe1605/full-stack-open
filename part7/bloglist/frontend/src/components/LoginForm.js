@@ -1,5 +1,7 @@
 import Input from "./Input";
 import { useState } from "react";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 const LoginForm = ({ onLogin }) => {
   const handleLogin = (event) => {
@@ -10,7 +12,7 @@ const LoginForm = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   return (
-    <form onSubmit={handleLogin} className="login-form">
+    <Form onSubmit={handleLogin} className="login-form">
       <Input
         id="username"
         type="text"
@@ -25,8 +27,10 @@ const LoginForm = ({ onLogin }) => {
         value={password}
         handleChange={({ target }) => setPassword(target.value)}
       />
-      <button type="submit">login</button>
-    </form>
+      <Button className="mt-3" variant="primary" type="submit">
+        login
+      </Button>
+    </Form>
   );
 };
 

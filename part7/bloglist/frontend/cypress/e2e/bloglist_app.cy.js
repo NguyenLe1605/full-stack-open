@@ -43,9 +43,7 @@ describe("bloglist tests", () => {
       cy.get("#username").type("wtf");
       cy.get("#password").type("wtf");
       cy.contains("login").click();
-      cy.get(".notification")
-        .should("contain", "wrong username or password")
-        .and("have.css", "color", "rgb(255, 0, 0)");
+      cy.get(".notification").should("contain", "wrong username or password");
     });
   });
 
@@ -77,7 +75,6 @@ describe("bloglist tests", () => {
       cy.get("#blog-btn").click();
       cy.contains(`${blog.title} ${blog.author}`);
       cy.clock();
-      cy.get(".notification").should("have.css", "color", "rgb(0, 128, 0)");
       cy.tick(5000);
       cy.get(".notification").should("not.exist");
     });

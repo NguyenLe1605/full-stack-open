@@ -1,16 +1,17 @@
+import Form from "react-bootstrap/Form";
 const Input = (props) => {
   const { id, type, value, handleChange, name } = props;
   return (
-    <div>
-      <label htmlFor={id}>{name}</label>
-      <input
+    <Form.Group>
+      <Form.Label htmlFor={id}>{name}</Form.Label>
+      <Form.Control
         type={type}
         id={id}
         value={value}
         name={name}
         onChange={handleChange}
       />
-    </div>
+    </Form.Group>
   );
 };
 

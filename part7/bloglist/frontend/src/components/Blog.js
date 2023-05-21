@@ -1,24 +1,18 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import BlogDetails from "./BlogDetails";
+import ListGroupItem from "react-bootstrap/esm/ListGroupItem";
 
 const Blog = ({ blog, handleLikeClick, handleRemoveClick, isCurrentUser }) => {
   const [visible, setVisibility] = useState(false);
   const showWhenVisible = { display: visible ? "" : "none" };
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-  };
 
   const buttonStyle = {
     marginLeft: 5,
   };
 
   return (
-    <div style={blogStyle} className="blog">
+    <ListGroupItem className="blog mb-2">
       <Link to={`blogs/${blog.id}`}>
         {blog.title} {blog.author}
       </Link>
@@ -38,7 +32,7 @@ const Blog = ({ blog, handleLikeClick, handleRemoveClick, isCurrentUser }) => {
         handleRemoveClick={handleRemoveClick}
         isCurrentUser={isCurrentUser}
       />
-    </div>
+    </ListGroupItem>
   );
 };
 
